@@ -29,6 +29,9 @@ This is a simple Todo List application built using HTML, CSS, and JavaScript.
 ### Task Added
 ![Task Added](screenshot3.png)
 
+### Edit a Task
+![Edit a Task](screenshot4.png)
+
 ### Deleting a Task
-![Deleting a Task](screenshot4.png)
+![Deleting a Task](screenshot5.png)
 >>>>>>> bbea5c7 (Initial commit)
