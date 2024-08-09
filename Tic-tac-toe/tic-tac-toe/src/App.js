@@ -1,5 +1,28 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import './App.css';
 
+// Helper function to calculate the winner
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
+
+// Square component
 function Square({ value, onSquareClick }) {
   return (
     <button className="square" onClick={onSquareClick}>
@@ -8,6 +31,7 @@ function Square({ value, onSquareClick }) {
   );
 }
 
+// Board component
 function Board({ xIsNext, squares, onPlay }) {
   function handleClick(i) {
     if (calculateWinner(squares) || squares[i]) {
@@ -25,9 +49,13 @@ function Board({ xIsNext, squares, onPlay }) {
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
-    status = 'Winner: ' + winner;
+    status = `🎉 Winner: ${winner}! 🎉`;
+    setTimeout(() => {
+      alert(status);
+      document.getElementById('new-game-btn')?.classList.remove('hidden');
+    }, 100);
   } else {
-    status = 'Next player: ' + (xIsNext ? 'X' : 'O');
+    status = `Next player: ${xIsNext ? 'X' : 'O'}`;
   }
 
   return (
@@ -52,7 +80,8 @@ function Board({ xIsNext, squares, onPlay }) {
   );
 }
 
-export default function Game() {
+// Main Game component
+export default function App() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
   const xIsNext = currentMove % 2 === 0;
@@ -82,6 +111,10 @@ export default function Game() {
     );
   });
 
+  function handleNewGame() {
+    window.location.reload();
+  }
+
   return (
     <div className="game">
       <div className="game-board">
@@ -89,27 +122,10 @@ export default function Game() {
       </div>
       <div className="game-info">
         <ol>{moves}</ol>
+        <button id="new-game-btn" className="hidden new-game" onClick={handleNewGame}>
+          New Game
+        </button>
       </div>
     </div>
   );
-}
-
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
 }
